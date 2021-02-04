@@ -4,7 +4,9 @@ import DisplayTab from '../components/DisplayTab'
 import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalAmount from '../components/TotalAmount'
+import { Tabs, Tab } from '../components/Tabs'
 import { LIST_VIEW, CHART_VIEW, TYPE_EXPENSE, TYPE_INCOME, parseToYearAndMonth, padLeft } from '../utility'
+import Ionicon from 'react-ionicons'
 
 export const categories = {
     "1": {
@@ -45,6 +47,8 @@ const newItem = {
     "categoryId": "1"
 }
 
+const tabContent = [LIST_VIEW, CHART_VIEW]
+
 class Home extends React.Component {
 
     constructor(props) {
@@ -52,14 +56,14 @@ class Home extends React.Component {
         this.state = {
             items,
             currentDate: parseToYearAndMonth(),
-            displayTab: LIST_VIEW
+            displayTab: tabContent[0]
         }
     }
 
 
-    changeDisplay = (display) => {
+    changeDisplay = (tabIdx) => {
         this.setState({
-            displayTab: display
+            displayTab: tabContent[tabIdx]
         })
     }
 
@@ -102,7 +106,7 @@ class Home extends React.Component {
         const itemsWithCategory = items.map((item) => {
             item.category = categories[item.categoryId]
             return item
-        }).filter( item => {
+        }).filter(item => {
             return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
         })
         let totalIncome = 0, totalExpense = 0
@@ -127,7 +131,25 @@ class Home extends React.Component {
                 </div>
 
                 <div className="content-area py-3 px-3">
-                    <DisplayTab activeTab={displayTab} onTabChange={this.changeDisplay} />
+                    <Tabs activeIndex={0} onTabChange={this.changeDisplay}>
+                        <Tab>
+                            <Ionicon
+                                className="rounded-circle mr-2"
+                                fontSize="25px"
+                                color={'#007bff'}
+                                icon='ios-paper' />
+                            List
+                    </Tab>
+                        <Tab>
+                            <Ionicon
+                                className="rounded-circle mr-2"
+                                fontSize="25px"
+                                color={'#007bff'}
+                                icon='ios-pie' />
+                            Chart
+                        </Tab>
+                    </Tabs>
+                    {/* <DisplayTab activeTab={displayTab} onTabChange={this.changeDisplay} /> */}
                     <CreateBtn onCreateClicked={this.createItem} />
                     {displayTab === LIST_VIEW &&
                         <ExpenseList items={itemsWithCategory} onEditItem={this.editItem} onDeleteItem={this.deleteItem} />}

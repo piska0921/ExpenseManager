@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs, Tab } from '../components/Tabs'
 import CategorySelector from '../components/CategorySelector'
+import ExpenseForm from '../components/ExpenseForm'
 
 export const categories = [
     {
@@ -38,6 +39,7 @@ const Create = () => {
                 <Tab>Income</Tab>
             </Tabs>
             <CategorySelector categories={categories} onCategorySelected={() => {}}/>
+            <ExpenseForm onFormSubmit={()=> {}} onFormCancel = {()=> {}}/>
         </div>)
 
 }

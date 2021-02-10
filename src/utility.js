@@ -19,5 +19,9 @@ export const parseToYearAndMonth = (str) => {
         year: date.getFullYear(),
         month: date.getMonth() + 1
     }
+}
 
+export const validateDate = (dateString) => {
+    const regEx = /^\d{4}-\d{2}-\d{2}$/
+    return dateString.match(regEx)
 }

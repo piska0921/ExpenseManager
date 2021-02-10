@@ -15,7 +15,20 @@ const categories = [
         "name": "finance",
         "type": "expense",
         "iconName": "logo-yen"
-    }
+    },
+    {
+        "id": "3",
+        "name": "food",
+        "type": "expense",
+        "iconName": "ios-pizza"
+    },
+    {
+        "id": "4",
+        "name": "cloth",
+        "type": "expense",
+        "iconName": "ios-shirt"
+    },
+
 ]
 
 let props = {

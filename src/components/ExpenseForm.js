@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {validateDate} from '../utility'
+import { validateDate } from '../utility'
 
 class ExpenseForm extends React.Component {
     constructor(props) {
@@ -8,28 +8,38 @@ class ExpenseForm extends React.Component {
         this.state = {
             editItem: props.editItem,
             isValidated: true,
-            errorMsg: ''
+            errorMsg: '',
+            isEdit: !(props.editItem && Object.keys(props.editItem).length === 0)
         }
     }
 
-    submitForm = (event) => { 
+    submitForm = (event) => {
+        const isEdit = this.state.isEdit
         const title = this.titleInput.value.trim()
         const amount = this.amountInput.value.trim() * 1
         const date = this.dateInput.value.trim()
-
-        if ( title && amount && date ){
+        event.preventDefault()
+        if (title && amount && date) {
             if (amount <= 0) {
                 this.setState({
                     isValidated: false,
-                    errorMsg: 'Amount must be greater than 0'               
+                    errorMsg: 'Amount must be greater than 0'
                 })
-            }else if (!validateDate(date)){
+            } else if (!validateDate(date)) {
                 this.setState({
                     isValidated: false,
-                    errorMsg: 'Please enter correct date'               
+                    errorMsg: 'Please enter correct date'
                 })
-            }else {
-                this.props.onFormSubmit()
+            } else {
+                if (!isEdit) {
+                    console.log('create')
+                    const data = { title, amount, date }
+                    this.props.onFormSubmit(data, isEdit)
+                } else {
+                    console.log('edit')
+                    console.log({...this.state.editItem, title, amount, date})
+                    this.props.onFormSubmit({...this.state.editItem, title, amount, date}, isEdit)
+                }
             }
         } else {
             this.setState({
@@ -37,9 +47,10 @@ class ExpenseForm extends React.Component {
                 errorMsg: 'Please fill in all required fields'
             })
         }
-        event.preventDefault()
+
     }
     render() {
+        const {editItem} = this.state
         return (
             <form style={{ textAlign: 'left' }} onSubmit={(event) => { this.submitForm(event) }} noValidate>
                 <div className="form-group">
@@ -47,7 +58,7 @@ class ExpenseForm extends React.Component {
                     <input
                         type="text" className="form-control"
                         id="title" placeholder="Please enter title"
-                        defaultValue=''
+                        defaultValue={(Object.keys(editItem).length === 0) ? '' : editItem.title}
                         ref={(input) => { this.titleInput = input }}
                     />
                 </div>
@@ -60,7 +71,7 @@ class ExpenseForm extends React.Component {
                         <input
                             type="number" className="form-control"
                             id="amount" placeholder="Please enter amount"
-                            defaultValue=''
+                            defaultValue={(Object.keys(editItem).length === 0) ? '' : editItem.amount}
                             ref={(input) => { this.amountInput = input }}
                         />
                     </div>
@@ -70,12 +81,12 @@ class ExpenseForm extends React.Component {
                     <input
                         type="date" className="form-control"
                         id="date" placeholder="Please choose date"
-                        defaultValue=''
+                        defaultValue={(Object.keys(editItem).length === 0) ? '' : editItem.date}
                         ref={(input) => { this.dateInput = input }}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary mr-3">Save</button>
-                <button className="btn btn-secondary">Cancel</button>
+                <button className="btn btn-secondary" onClick={this.props.onFormCancel}>Cancel</button>
                 { !this.state.isValidated && <div className="alert alert-danger mt-5" role="alert">{this.state.errorMsg}</div>}
             </form>
 

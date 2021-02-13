@@ -27,7 +27,7 @@ const ExpenseList = ({ items, onEditItem, onDeleteItem }) => {
                         {item.date}
                     </span> 
                     <a className="col-1" 
-                    onClick={() => onEditItem(item)}
+                    onClick={(event) => onEditItem(event, item)}
                     href="#">
                         <Ionicon
                         className="rounded-circle"

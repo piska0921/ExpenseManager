@@ -25,3 +25,14 @@ export const validateDate = (dateString) => {
     const regEx = /^\d{4}-\d{2}-\d{2}$/
     return dateString.match(regEx)
 }
+
+export const flattenData = (arr) => {
+    return arr.reduce((map, item) => {
+        map[item.id] = item
+        return map
+    }, {})
+}
+
+export const generateId = () => {
+    return "_" + Math.random().toString(36).substr(2, 9)
+}

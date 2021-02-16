@@ -38,7 +38,7 @@ const tabContent = [TYPE_EXPENSE, TYPE_INCOME]
 class Create extends React.Component {
     constructor(props) {
         super(props)
-        const id  = props.match.params.id
+        const id = props.match.params.id
         const { categories, items } = props.data
         this.state = {
             selectedTab: (id && items[id]) ? categories[items[id].categoryId].type : TYPE_EXPENSE,
@@ -46,6 +46,16 @@ class Create extends React.Component {
         }
     }
 
+    componentDidMount() {
+        const { id } = this.props.match.params
+        this.props.actions.getEditItem(id).then(data => {
+            const { editItem, categories } = data
+            this.setState({
+                selectedTab: (id && editItem) ? categories[editItem.categoryId].type : TYPE_EXPENSE,
+                selectedCategory: (id && editItem) ? categories[editItem.categoryId] : null,
+            })
+        })
+    }
     changeTab = (idx) => {
         this.setState({
             selectedTab: tabContent[idx]
@@ -65,11 +75,15 @@ class Create extends React.Component {
 
     submitForm = (data, isEdit) => {
         if (!isEdit) {
-            this.props.actions.createItem(data, this.state.selectedCategory.id)
+            this.props.actions.createItem(data, this.state.selectedCategory.id).then(
+                this.props.history.push('/')
+            )
         } else {
-            this.props.actions.editItem(data, this.state.selectedCategory.id)
+            this.props.actions.editItem(data, this.state.selectedCategory.id).then(
+                this.props.history.push('/')
+            )
         }
-        this.props.history.push('/')
+
     }
 
     render() {
@@ -91,7 +105,7 @@ class Create extends React.Component {
                 <Tab>Expense</Tab>
                 <Tab>Income</Tab>
             </Tabs>
-            <CategorySelector categories={filteredCategories} onCategorySelected={this.selectCategory} selectedCategory={selectedCategory}/>
+            <CategorySelector categories={filteredCategories} onCategorySelected={this.selectCategory} selectedCategory={selectedCategory} />
             <ExpenseForm onFormSubmit={this.submitForm} onFormCancel={this.cancelForm} editItem={editItem} />
         </div>)
     }

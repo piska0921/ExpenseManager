@@ -4,6 +4,7 @@ import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalAmount from '../components/TotalAmount'
 import { Tabs, Tab } from '../components/Tabs'
+import Loading from '../components/Loading'
 import { LIST_VIEW, CHART_VIEW, TYPE_EXPENSE, TYPE_INCOME, parseToYearAndMonth, padLeft } from '../utility'
 import Ionicon from 'react-ionicons'
 import WithContext from '../WithContext'
@@ -56,11 +57,14 @@ class Home extends React.Component {
         super(props)
         this.state = {
             // items,
-            currentDate: parseToYearAndMonth(),
+            // currentDate: parseToYearAndMonth(),
             displayTab: tabContent[0]
         }
     }
 
+    componentDidMount() {
+        this.props.actions.getInitialData()
+    }
 
     changeDisplay = (tabIdx) => {
         this.setState({
@@ -69,12 +73,13 @@ class Home extends React.Component {
     }
 
     changeDate = (year, month) => {
-        this.setState({
-            currentDate: {
-                year,
-                month
-            }
-        })
+        this.props.actions.selectNewDate(year, month)
+        // this.setState({
+        //     currentDate: {
+        //         year,
+        //         month
+        //     }
+        // })
     }
 
     editItem = (event, editItem) => {
@@ -108,14 +113,16 @@ class Home extends React.Component {
 
     render() {
         const { data } = this.props
-        const { items, categories} = data
-        const { currentDate, displayTab } = this.state
+        const { isLoading, items, categories, currentDate } = data
+        const { displayTab } = this.state
         const itemsWithCategory = Object.values(items).map((item) => {
             item.category = categories[item.categoryId]
             return item
-        }).filter(item => {
-            return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
         })
+        // .filter(item => {
+        //     return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
+        // })
+
         let totalIncome = 0, totalExpense = 0
         itemsWithCategory.forEach((item) => {
             if (item.category.type === TYPE_EXPENSE) {
@@ -137,32 +144,34 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </div>
-
-                <div className="content-area py-3 px-3">
-                    <Tabs activeIndex={0} onTabChange={this.changeDisplay}>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-paper' />
+                <Tabs activeIndex={0} onTabChange={this.changeDisplay}>
+                    <Tab>
+                        <Ionicon
+                            className="rounded-circle mr-2"
+                            fontSize="25px"
+                            color={'#007bff'}
+                            icon='ios-paper' />
                                         List
                                    </Tab>
-                        <Tab>
-                            <Ionicon
-                                className="rounded-circle mr-2"
-                                fontSize="25px"
-                                color={'#007bff'}
-                                icon='ios-pie' />
+                    <Tab>
+                        <Ionicon
+                            className="rounded-circle mr-2"
+                            fontSize="25px"
+                            color={'#007bff'}
+                            icon='ios-pie' />
                                         Chart
                                    </Tab>
-                    </Tabs>
-                    {/* <DisplayTab activeTab={displayTab} onTabChange={this.changeDisplay} /> */}
+                </Tabs>
+                {/* <DisplayTab activeTab={displayTab} onTabChange={this.changeDisplay} /> */}
+                <div className="content-area py-3 px-3">
                     <CreateBtn onCreateClicked={this.createItem} />
+                    {isLoading && <Loading />}
+                    {!isLoading && <>
                     {displayTab === LIST_VIEW &&
                         <ExpenseList items={itemsWithCategory} onEditItem={this.editItem} onDeleteItem={this.deleteItem} />}
                     {displayTab === CHART_VIEW &&
-                        <h1>CHART</h1>}
+                        <h1>CHART</h1>}</>}
+
 
                 </div>
             </>)

@@ -8,6 +8,11 @@ export class Tabs extends React.Component {
             activeIndex: props.activeIndex
         }
     }
+    componentDidMount() {
+        this.setState({
+            activeIndex: this.props.activeIndex
+        })
+    }
     tabChange = (event, idx) => {
         event.preventDefault()
         this.setState({
@@ -18,6 +23,7 @@ export class Tabs extends React.Component {
     render() {
         const { children } = this.props
         const { activeIndex } = this.state
+
         return (
             <ul className="nav nav-tabs nav-fill py-1">
                 {React.Children.map(children, (child, idx) => {

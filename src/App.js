@@ -14,8 +14,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       isLoading: false,
-      categories: flattenData(testCategories),
-      items: flattenData(testItems),
+      categories: {},
+      items: {},
       currentDate: parseToYearAndMonth()
     }
     const withLoading = (callback) => {
@@ -45,27 +45,36 @@ class App extends React.Component {
         return { items, categories }
       }),
       getEditItem: withLoading(async (itemId) => {
-        let promiseArr = [axios.get('/categories')]
-        if (itemId) {
+        const { items, categories } = this.state
+        //check if data is already fetched
+        let promiseArr = []
+        if (Object.keys(categories).length === 0) {
+          promiseArr.push(axios.get('/categories'))
+        }
+        const itemFetched = (Object.keys(items).indexOf(itemId) > -1)
+        if (itemId && !itemFetched) {
           const getURLWithID = `/items/${itemId}`
           promiseArr.push(axios.get(getURLWithID))
         }
-        const [categories, editItem] = await Promise.all(promiseArr)
+        //avoid loading same resources repeatedly
+        const [fetchedCategories, editItem] = await Promise.all(promiseArr)
+        const finalCategories = fetchedCategories ? flattenData(fetchedCategories.data): categories
+        const finalItem = editItem ? editItem.data : items[itemId]
         if (itemId) {
           this.setState({
             isLoading: false,
-            categories: flattenData(categories.data),
-            items: { ...this.state.items, [itemId]: editItem }
+            categories: finalCategories,
+            items: { ...this.state.items, [itemId]: finalItem },
           })
         } else {
           this.setState({
             isLoading: false,
-            categories: flattenData(categories.data)
+            categories: finalCategories
           })
         }
         return {
-          categories: categories && categories.data,
-          editItem: editItem && editItem.data
+          categories: finalCategories,
+          editItem: finalItem
         }
       }),
       selectNewDate: withLoading(async (year, month) => {
@@ -84,9 +93,10 @@ class App extends React.Component {
         const deletedItem = await axios.delete(`/items/${itemId}`)
         delete this.state.items[itemId]
         this.setState({
+          isLoading: false,
           items: this.state.items
         })
-        return deletedItem
+        return deletedItem.data
       }),
       createItem: withLoading(async (data, categoryId) => {
         const id = generateId()
@@ -106,10 +116,10 @@ class App extends React.Component {
           timestamp: new Date(item.date).getTime(),
           categoryId: updatedCategoryId
         }
-        const updatedItem = await axios.patch(`items/${item.id}`, updatedData)
+        const updatedItem = await axios.put(`items/${updatedData.id}`, updatedData)
         this.setState({
           isLoading: false,
-          items: { ...this.state.items, [updatedItem.id]: updatedItem.data }
+          items: { ...this.state.items, [updatedData.id]: updatedData }
         })
         return updatedItem.data
       })

@@ -122,7 +122,6 @@ class Home extends React.Component {
         // .filter(item => {
         //     return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
         // })
-
         let totalIncome = 0, totalExpense = 0
         itemsWithCategory.forEach((item) => {
             if (item.category.type === TYPE_EXPENSE) {

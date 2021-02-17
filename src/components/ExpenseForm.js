@@ -32,13 +32,11 @@ class ExpenseForm extends React.Component {
                 })
             } else {
                 if (!isEdit) {
-                    console.log('create')
                     const data = { title, amount, date }
                     this.props.onFormSubmit(data, isEdit)
                 } else {
-                    console.log('edit')
-                    console.log({...this.state.editItem, title, amount, date})
-                    this.props.onFormSubmit({...this.state.editItem, title, amount, date}, isEdit)
+                    delete this.props.editItem.category
+                    this.props.onFormSubmit({...this.props.editItem, title, amount, date}, isEdit)
                 }
             }
         } else {
@@ -50,7 +48,7 @@ class ExpenseForm extends React.Component {
 
     }
     render() {
-        const {editItem} = this.state
+        const {editItem} = this.props
         return (
             <form style={{ textAlign: 'left' }} onSubmit={(event) => { this.submitForm(event) }} noValidate>
                 <div className="form-group">

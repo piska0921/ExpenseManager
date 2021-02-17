@@ -73,39 +73,6 @@
       "monthCategory": "2021-2",
       "categoryId": "5",
       "timestamp": 1613388193000
-    },
-    {
-      "title": "aa",
-      "amount": 12,
-      "date": "2021-02-17",
-      "monthCategory": "2021-2",
-      "timestamp": 1613520000000,
-      "id": "_okcjzh1zk",
-      "categoryId": "3",
-      "category": {
-        "id": "2",
-        "name": "medical",
-        "type": "expense",
-        "iconName": "ios-medkit"
-      }
-    },
-    {
-      "title": "a",
-      "amount": 1,
-      "date": "2021-02-17",
-      "monthCategory": "2021-2",
-      "timestamp": 1613520000000,
-      "id": "_09ciq2mhe",
-      "categoryId": "1"
-    },
-    {
-      "title": "1",
-      "amount": 1,
-      "date": "2021-02-17",
-      "monthCategory": "2021-2",
-      "timestamp": 1613520000000,
-      "id": "_pqvz7z2hd",
-      "categoryId": "1"
     }
   ]
 }

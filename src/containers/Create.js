@@ -35,7 +35,7 @@ export const categories = [
 ]
 
 const tabContent = [TYPE_EXPENSE, TYPE_INCOME]
-class Create extends React.Component {
+export class Create extends React.Component {
     constructor(props) {
         super(props)
         const id = props.match.params.id
@@ -48,6 +48,7 @@ class Create extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.match.params
+        //situation when edit url is directly accessed
         this.props.actions.getEditItem(id).then(data => {
             const { editItem, categories } = data
             this.setState({
@@ -99,7 +100,7 @@ class Create extends React.Component {
         const editItem = (id && items[id]) ? items[id] : {}
         //defualt selected tab index
         const tabIdx = tabContent.findIndex(content => content === selectedTab)
-
+        console.log(tabIdx)
         return (<div className="py-3 px-3 mt-4" style={{ backgroundColor: '#fff' }}>
             <Tabs activeIndex={tabIdx} onTabChange={this.changeTab}>
                 <Tab>Expense</Tab>

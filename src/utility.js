@@ -2,6 +2,15 @@ export const LIST_VIEW = 'list'
 export const CHART_VIEW = 'chart'
 export const TYPE_EXPENSE = 'expense'
 export const TYPE_INCOME = 'income'
+
+export const Colors = {
+    "navy": "#1c2a4f",
+    "blue": "#007bff",
+    "lightPurple": "#c9d0ff",
+    "purple": "#89a4ff",
+    "white": "#ffffff"
+}
+
 export const padLeft = (n) => {
     return (n > 0 && n < 10) ? `0${n}` : `${n}`
 }

@@ -48,20 +48,32 @@ describe('test component init behavior', () => {
 
 describe('test component for creating item', () => {
     const wrapper = mount(<Create data={loadedData} actions={actions} match={createMatch} history={history} />)
+    const setInputValue = ( selector, newValue) => {
+        wrapper.find(selector).instance().value = newValue
+    }
     it('should pass null to props selectedCategory for CategorySelector', () => {
         expect(wrapper.find(CategorySelector).props().selectedCategory).toEqual(null)
     })
     it('should pass empty object to expense form cimpinent', () => {
         expect(wrapper.find(ExpenseForm).props().editItem).toEqual({})
     })
-    it('click submit should not trigger the createItem action', () => {
+    it('click submit should not trigger the createItem action with no input', () => {
         wrapper.find('form').simulate('submit')
         expect(actions.createItem).not.toHaveBeenCalled()
     })
-    it('click submit should fill in all inputs and select category')
+    it('click submit should trigger action createItem after filling in all inputs and selecting a category',() => {
+        setInputValue('#title', 'title')
+        setInputValue('#amount', '10')
+        setInputValue('#date', '2021-02-01')
+        wrapper.find('.category_item').first().simulate('click')
+        wrapper.find('form').simulate('submit')
+        const inputData = {title: 'title', amount: 200, date: '2021-02-01'}
+        expect(actions.createItem).toHaveBeenCalledWith({inputData}, testCategories[0].id)     
+    })
 
 })
 
 describe('test component for editting item', () => {
+    const wrapper = mount(<Create data={loadedData} actions={actions} match={editMatch} history={history} />)
 
 })

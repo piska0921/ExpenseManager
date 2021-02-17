@@ -6,34 +6,6 @@ import WithContext from '../WithContext'
 import { TYPE_EXPENSE, TYPE_INCOME } from '../utility'
 import { withRouter } from "react-router"
 
-export const categories = [
-    {
-        "id": "1",
-        "name": "travel",
-        "type": "expense",
-        "iconName": "ios-plane"
-    },
-    {
-        "id": "2",
-        "name": "finance",
-        "type": "expense",
-        "iconName": "logo-yen"
-    },
-    {
-        "id": "3",
-        "name": "food",
-        "type": "expense",
-        "iconName": "ios-pizza"
-    },
-    {
-        "id": "4",
-        "name": "cloth",
-        "type": "expense",
-        "iconName": "ios-shirt"
-    },
-
-]
-
 const tabContent = [TYPE_EXPENSE, TYPE_INCOME]
 export class Create extends React.Component {
     constructor(props) {
@@ -100,7 +72,6 @@ export class Create extends React.Component {
         const editItem = (id && items[id]) ? items[id] : {}
         //defualt selected tab index
         const tabIdx = tabContent.findIndex(content => content === selectedTab)
-        console.log(tabIdx)
         return (<div className="py-3 px-3 mt-4" style={{ backgroundColor: '#fff' }}>
             <Tabs activeIndex={tabIdx} onTabChange={this.changeTab}>
                 <Tab>Expense</Tab>

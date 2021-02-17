@@ -73,6 +73,42 @@
       "monthCategory": "2021-2",
       "categoryId": "5",
       "timestamp": 1613388193000
+    },
+    {
+      "title": "brunch",
+      "amount": 23,
+      "date": "2021-02-11",
+      "monthCategory": "2021-2",
+      "timestamp": 1613001600000,
+      "id": "_57fx12651",
+      "categoryId": "3"
+    },
+    {
+      "title": "t-shirt",
+      "amount": 39,
+      "date": "2021-02-13",
+      "monthCategory": "2021-2",
+      "timestamp": 1613174400000,
+      "id": "_98qouxmmm",
+      "categoryId": "4"
+    },
+    {
+      "title": "eye drops",
+      "amount": 13.49,
+      "date": "2021-02-04",
+      "monthCategory": "2021-2",
+      "timestamp": 1612396800000,
+      "id": "_un01abz2l",
+      "categoryId": "2"
+    },
+    {
+      "title": "stock revenue",
+      "amount": 1000,
+      "date": "2021-02-14",
+      "monthCategory": "2021-2",
+      "timestamp": 1613260800000,
+      "id": "_ze05td48n",
+      "categoryId": "6"
     }
   ]
 }

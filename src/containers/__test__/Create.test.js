@@ -1,6 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { Create } from '../Create'
+import { MemoryRouter } from 'react-router-dom'
 import { parseToYearAndMonth, flattenData } from '../../utility'
 import Loading from '../../components/Loading'
 import { testCategories, testItems } from '../../testData'
@@ -36,7 +37,7 @@ const actions = {
     createItem: jest.fn().mackReturnValue(Promise.resolve(''))
 }
 describe('test component init behavior', () => {
-    const wrapper = mount(<Create data={initialData} actions={actions} match={editMatch} />)
+    const wrapper = mount(<MemoryRouter> <Create data={initialData} actions={actions} match={editMatch} /></MemoryRouter>)
 
     it('getEditItem should be called with right parameters', () => {
         expect(actions.getEditItem).toHaveBeenCalledWith(testEditItem.id)
@@ -47,8 +48,8 @@ describe('test component init behavior', () => {
 })
 
 describe('test component for creating item', () => {
-    const wrapper = mount(<Create data={loadedData} actions={actions} match={createMatch} history={history} />)
-    const setInputValue = ( selector, newValue) => {
+    const wrapper = mount(<MemoryRouter><Create data={loadedData} actions={actions} match={createMatch} history={history} /></MemoryRouter>)
+    const setInputValue = (selector, newValue) => {
         wrapper.find(selector).instance().value = newValue
     }
     it('should pass null to props selectedCategory for CategorySelector', () => {
@@ -61,19 +62,21 @@ describe('test component for creating item', () => {
         wrapper.find('form').simulate('submit')
         expect(actions.createItem).not.toHaveBeenCalled()
     })
-    it('click submit should trigger action createItem after filling in all inputs and selecting a category',() => {
+    it('click submit should trigger action createItem after filling in all inputs and selecting a category', () => {
         setInputValue('#title', 'title')
         setInputValue('#amount', '10')
         setInputValue('#date', '2021-02-01')
         wrapper.find('.category_item').first().simulate('click')
         wrapper.find('form').simulate('submit')
-        const inputData = {title: 'title', amount: 200, date: '2021-02-01'}
-        expect(actions.createItem).toHaveBeenCalledWith({inputData}, testCategories[0].id)     
+        const inputData = { title: 'title', amount: 200, date: '2021-02-01' }
+        expect(actions.createItem).toHaveBeenCalledWith({ inputData }, testCategories[0].id)
     })
 
 })
 
 describe('test component for editting item', () => {
-    const wrapper = mount(<Create data={loadedData} actions={actions} match={editMatch} history={history} />)
-
+    const wrapper = mount(<MemoryRouter><Create data={loadedData} actions={actions} match={editMatch} history={history} /></MemoryRouter>)
+    const setInputValue = (selector, newValue) => {
+        wrapper.find(selector).instance().value = newValue
+    }
 })

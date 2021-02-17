@@ -23,7 +23,7 @@
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"npm run mock\"",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "mock": "json-server --watch db.json --port 3004"
   },

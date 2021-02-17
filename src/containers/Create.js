@@ -2,9 +2,9 @@ import React from 'react'
 import { Tabs, Tab } from '../components/Tabs'
 import CategorySelector from '../components/CategorySelector'
 import ExpenseForm from '../components/ExpenseForm'
-import WithContext from '../WithContext'
 import { TYPE_EXPENSE, TYPE_INCOME } from '../utility'
 import { withRouter } from "react-router"
+import WithContext from '../WithContext'
 
 const tabContent = [TYPE_EXPENSE, TYPE_INCOME]
 export class Create extends React.Component {

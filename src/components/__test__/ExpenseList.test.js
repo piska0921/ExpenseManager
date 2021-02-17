@@ -1,12 +1,12 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import ExpenseList from '../ExpenseList'
-import {categories, items} from '../../containers/Home'
+import {testCategories, testItems} from '../../testData'
 import Ionicon from 'react-ionicons'
 
 
-const itemsWithCategory = items.map((item) => {
-    item.category = categories[item.categoryId]
+const itemsWithCategory = testItems.map((item) => {
+    item.category = testCategories[item.categoryId]
     return item
 })
 
@@ -16,7 +16,7 @@ const props = {
     onEditItem: jest.fn(),
     onDeleteItem: jest.fn()
 }
-
+const mockedEvent = { target: {} }
 let wrapper;
 describe('test ExpenseList component', () => {
     beforeEach(() => {
@@ -37,8 +37,8 @@ describe('test ExpenseList component', () => {
     })
     it('should trigger correct function callbacks', () => {
         const firstItem = wrapper.find('.list-group-item').first()
-        firstItem.find('a').first().simulate('click')
-        expect(props.onEditItem).toHaveBeenCalledWith(itemsWithCategory[0])
+        firstItem.find('a').first().simulate('click', mockedEvent)
+        expect(props.onEditItem).toHaveBeenCalledWith(mockedEvent, itemsWithCategory[0])
         firstItem.find('a').last().simulate('click')
         expect(props.onDeleteItem).toHaveBeenCalledWith(itemsWithCategory[0].id)
 

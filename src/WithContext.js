@@ -9,8 +9,6 @@ const WithContext = (Component) => {
             }}
         </AppContext.Consumer>
     )
-
-
 }
 
 export default WithContext

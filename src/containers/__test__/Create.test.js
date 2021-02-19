@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { Create } from '../Create'
+import { CreatePage } from '../Create'
 import { MemoryRouter } from 'react-router-dom'
 import { parseToYearAndMonth, flattenData } from '../../utility'
 import Loading from '../../components/Loading'
@@ -33,11 +33,11 @@ const loadedData = {
 }
 
 const actions = {
-    getEditItem: jest.fn().mackReturnValue(Promise.resolve({ categories: flattenData(testCategories), editItem: testEditItem })),
-    createItem: jest.fn().mackReturnValue(Promise.resolve(''))
+    getEditItem: jest.fn().mockReturnValue(Promise.resolve({ categories: flattenData(testCategories), editItem: testEditItem })),
+    createItem: jest.fn().mockReturnValue(Promise.resolve(''))
 }
 describe('test component init behavior', () => {
-    const wrapper = mount(<MemoryRouter> <Create data={initialData} actions={actions} match={editMatch} /></MemoryRouter>)
+    const wrapper = mount(<MemoryRouter> <CreatePage data={initialData} actions={actions} match={editMatch} /></MemoryRouter>)
 
     it('getEditItem should be called with right parameters', () => {
         expect(actions.getEditItem).toHaveBeenCalledWith(testEditItem.id)
@@ -48,7 +48,7 @@ describe('test component init behavior', () => {
 })
 
 describe('test component for creating item', () => {
-    const wrapper = mount(<MemoryRouter><Create data={loadedData} actions={actions} match={createMatch} history={history} /></MemoryRouter>)
+    const wrapper = mount(<MemoryRouter><CreatePage  data={loadedData} actions={actions} match={createMatch} history={history} /></MemoryRouter>)
     const setInputValue = (selector, newValue) => {
         wrapper.find(selector).instance().value = newValue
     }
@@ -75,7 +75,7 @@ describe('test component for creating item', () => {
 })
 
 describe('test component for editting item', () => {
-    const wrapper = mount(<MemoryRouter><Create data={loadedData} actions={actions} match={editMatch} history={history} /></MemoryRouter>)
+    const wrapper = mount(<MemoryRouter><CreatePage data={loadedData} actions={actions} match={editMatch} history={history} /></MemoryRouter>)
     const setInputValue = (selector, newValue) => {
         wrapper.find(selector).instance().value = newValue
     }
